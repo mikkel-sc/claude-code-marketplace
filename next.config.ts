@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
 
   // Static export configuration for GitHub Pages
   output: 'export',
+  
+  // Base path for GitHub Pages deployment
+  basePath: '/claude-code-marketplace',
 
   // Security: Enable strict mode
   reactStrictMode: true,
