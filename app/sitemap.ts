@@ -1,6 +1,8 @@
 import { MetadataRoute } from 'next';
 import marketplacesData from '@/.claude-plugin/marketplaces.json';
 
+export const dynamic = 'force-static';
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://claudecodemarketplace.com';
   const lastModified = new Date();

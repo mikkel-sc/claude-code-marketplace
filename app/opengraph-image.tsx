@@ -1,5 +1,8 @@
 import { ImageResponse } from 'next/og';
 
+// Force static generation for export
+export const dynamic = 'force-static';
+
 // Image metadata
 export const alt = 'Claude Code Plugins - Discover and Install Extensions';
 export const size = {

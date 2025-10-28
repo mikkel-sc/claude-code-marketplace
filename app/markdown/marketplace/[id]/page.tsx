@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getMarketplaceData } from '@/app/actions';
+import marketplacesData from '@/.claude-plugin/marketplaces.json';
 
 export const revalidate = 3600; // Revalidate every hour
 
@@ -7,6 +8,13 @@ interface MarkdownMarketplacePageProps {
   params: {
     id: string;
   };
+}
+
+// Generate static params for all marketplaces
+export async function generateStaticParams() {
+  return marketplacesData.marketplaces.map((marketplace) => ({
+    id: marketplace.id,
+  }));
 }
 
 export default async function MarkdownMarketplacePage({ params }: MarkdownMarketplacePageProps) {
@@ -41,48 +49,48 @@ ${marketplace.tags && marketplace.tags.length > 0 ? `- **Tags**: ${marketplace.t
 ${!marketplace.error && marketplace.manifest && marketplace.manifest.plugins.length > 0 ? `## Available Plugins (${marketplace.manifest.plugins.length})
 
 ${marketplace.manifest.plugins.map((plugin, index) => {
-  const lines = [
-    `### ${index + 1}. ${plugin.name}`,
-    '',
-    plugin.description || 'No description available',
-    '',
-  ];
+    const lines = [
+      `### ${index + 1}. ${plugin.name}`,
+      '',
+      plugin.description || 'No description available',
+      '',
+    ];
 
-  if (plugin.author) {
-    lines.push(`**Author**: ${plugin.author}`);
-  }
+    if (plugin.author) {
+      lines.push(`**Author**: ${plugin.author}`);
+    }
 
-  if (plugin.version) {
-    lines.push(`**Version**: ${plugin.version}`);
-  }
+    if (plugin.version) {
+      lines.push(`**Version**: ${plugin.version}`);
+    }
 
-  if (plugin.tags && plugin.tags.length > 0) {
-    lines.push(`**Tags**: ${plugin.tags.join(', ')}`);
-  }
+    if (plugin.tags && plugin.tags.length > 0) {
+      lines.push(`**Tags**: ${plugin.tags.join(', ')}`);
+    }
 
-  if (plugin.keywords && plugin.keywords.length > 0) {
-    lines.push(`**Keywords**: ${plugin.keywords.join(', ')}`);
-  }
+    if (plugin.keywords && plugin.keywords.length > 0) {
+      lines.push(`**Keywords**: ${plugin.keywords.join(', ')}`);
+    }
 
-  lines.push('');
+    lines.push('');
 
-  if (plugin.repository) {
-    lines.push(`**Repository**: ${plugin.repository}`);
-  }
+    if (plugin.repository) {
+      lines.push(`**Repository**: ${plugin.repository}`);
+    }
 
-  if (plugin.homepage) {
-    lines.push(`**Homepage**: ${plugin.homepage}`);
-  }
+    if (plugin.homepage) {
+      lines.push(`**Homepage**: ${plugin.homepage}`);
+    }
 
-  lines.push('');
-  lines.push(`**Installation**:`);
-  lines.push('```bash');
-  lines.push(`/plugin install ${plugin.name}@${marketplace.id}`);
-  lines.push('```');
-  lines.push('');
+    lines.push('');
+    lines.push(`**Installation**:`);
+    lines.push('```bash');
+    lines.push(`/plugin install ${plugin.name}@${marketplace.id}`);
+    lines.push('```');
+    lines.push('');
 
-  return lines.join('\n');
-}).join('\n---\n\n')}` : ''}
+    return lines.join('\n');
+  }).join('\n---\n\n')}` : ''}
 
 ${marketplace.error ? `## Error
 

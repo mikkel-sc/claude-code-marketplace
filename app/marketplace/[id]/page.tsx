@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import MarketplaceDetailClient from './MarketplaceDetailClient';
 import { getMarketplaceData, getMarketplaceEntry } from '@/app/actions';
+import marketplacesData from '@/.claude-plugin/marketplaces.json';
 
 export const revalidate = 3600; // Revalidate every hour
 
@@ -8,6 +9,13 @@ interface MarketplacePageProps {
   params: {
     id: string;
   };
+}
+
+// Generate static params for all marketplaces
+export async function generateStaticParams() {
+  return marketplacesData.marketplaces.map((marketplace) => ({
+    id: marketplace.id,
+  }));
 }
 
 export async function generateMetadata({ params }: MarketplacePageProps) {

@@ -1,7 +1,6 @@
-'use server';
-
+// Build-time data fetching functions (no server actions for static export)
 import { MarketplaceHub, MarketplaceEntry, FetchedMarketplace } from '@/types/marketplace';
-import { fetchMarketplaces } from '@/lib/github';
+import { fetchMarketplaces, fetchMarketplace } from '@/lib/github';
 import marketplacesData from '@/.claude-plugin/marketplaces.json';
 
 const hub = marketplacesData as MarketplaceHub;
@@ -14,7 +13,6 @@ export async function getMarketplaceData(id: string): Promise<FetchedMarketplace
   const entry = hub.marketplaces.find((m) => m.id === id);
   if (!entry) return null;
 
-  const { fetchMarketplace } = await import('@/lib/github');
   return fetchMarketplace(entry);
 }
 
